@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Setup GitHub SSH Keys on Windows (2025 Guide)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      color: #222;
+    }
+    header {
+      background: #24292f;
+      color: #fff;
+      padding: 2rem 1rem 1rem 1rem;
+      text-align: center;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
+    main {
+      max-width: 720px;
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 16px #0001;
+      padding: 2.5rem;
+    }
+    h1, h2 {
+      margin-top: 0;
+    }
+    h1 {
+      font-size: 2.3rem;
+      letter-spacing: -.01em;
+    }
+    h2 {
+      margin-top: 2.3rem;
+      color: #24292f;
+      font-size: 1.35rem;
+    }
+    .toc {
+      background: #eaf4ff;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+    .toc a {
+      color: #0c62d6;
+      text-decoration: none;
+      margin-right: 1.2rem;
+    }
+    code, pre {
+      background: #f0f0f0;
+      border-radius: 4px;
+      font-size: 1em;
+      padding: 0.2em 0.4em;
+      color: #c7254e;
+    }
+    .tip {
+      background: #e7f4e4;
+      border-left: 4px solid #27ae60;
+      padding: 0.7em 1em;
+      margin: 1em 0;
+      border-radius: 8px;
+      color: #234d20;
+    }
+    .warn {
+      background: #fff5e5;
+      border-left: 4px solid #e67e22;
+      padding: 0.7em 1em;
+      margin: 1em 0;
+      border-radius: 8px;
+      color: #834c0c;
+    }
+    ol, ul {
+      padding-left: 1.5em;
+    }
+    @media (max-width: 800px) {
+      main { padding: 1rem; }
+      h1 { font-size: 2rem; }
+    }
+    footer {
+      text-align: center;
+      color: #888;
+      margin: 2rem auto 1rem auto;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Setup GitHub SSH Keys on Windows (2025 Guide)</h1>
+  <p>Secure, passwordless Git operations—one-time setup for all your repositories.</p>
+</header>
+<main>
+<div class="toc">
+  <b>Quick Navigation:</b>
+  <ul>
+    <li><a href="#step1">1. Install Git for Windows</a></li>
+    <li><a href="#step2">2. Generate an SSH Key</a></li>
+    <li><a href="#step3">3. Add Key to SSH Agent</a></li>
+    <li><a href="#step4">4. Copy & Add Key to GitHub</a></li>
+    <li><a href="#step5">5. Test Your SSH Connection</a></li>
+    <li><a href="#faq">FAQ & Troubleshooting</a></li>
+  </ul>
+</div>
+
+<h2 id="step1">1. Install Git for Windows</h2>
+<ol>
+  <li>
+    Download and run the <a href="https://gitforwindows.org/" target="_blank">Git for Windows installer</a>.
+  </li>
+  <li>
+    During setup, accept defaults. Make sure <b>Git Bash</b> is included—this makes SSH setup easy.
+  </li>
+  <li>
+    Finish installation. Launch <b>Git Bash</b> from your Start menu.
+  </li>
+</ol>
+<div class="tip">
+  <b>Tip:</b> You can use Git Bash, PowerShell, or Command Prompt, but Git Bash is the most compatible for SSH commands.
+</div>
+
+<h2 id="step2">2. Generate a New SSH Key</h2>
+<ol>
+  <li>
+    In Git Bash, run:<br>
+    <code>ssh-keygen -t ed25519 -C "your_email@example.com"</code>
+    <br>(Replace with your GitHub email)
+  </li>
+  <li>
+    Press <b>Enter</b> to accept the default save location.<br>
+    Optionally, add a passphrase (for extra security), or press Enter for none.
+  </li>
+  <li>
+    Your keys will be saved to <code>C:\Users\YourName\.ssh\id_ed25519</code> and <code>id_ed25519.pub</code>.
+  </li>
+</ol>
+<div class="warn">
+  <b>Note:</b> If your system doesn't support <code>ed25519</code>, use:<br>
+  <code>ssh-keygen -t rsa -b 4096 -C "your_email@example.com"</code>
+</div>
+
+<h2 id="step3">3. Add Your SSH Key to the Agent</h2>
+<ol>
+  <li>Start the SSH agent:<br>
+    <code>eval "$(ssh-agent -s)"</code>
+  </li>
+  <li>Add your SSH private key:<br>
+    <code>ssh-add ~/.ssh/id_ed25519</code>
+  </li>
+</ol>
+<div class="tip">
+  <b>Tip:</b> If you get a "could not open a connection" error, run Git Bash as Administrator.
+</div>
+
+<h2 id="step4">4. Copy & Add Your SSH Key to GitHub</h2>
+<ol>
+  <li>
+    Copy your public key to clipboard:<br>
+    <code>cat ~/.ssh/id_ed25519.pub</code><br>
+    (Or open in Notepad: <code>notepad $USERPROFILE\.ssh\id_ed25519.pub</code>)
+  </li>
+  <li>
+    Log in to <a href="https://github.com/settings/keys" target="_blank">GitHub &rarr; SSH and GPG keys</a>.
+  </li>
+  <li>
+    Click <b>New SSH key</b>, give it a descriptive title, and paste your key in the field.
+  </li>
+  <li>
+    Click <b>Add SSH key</b> to save.
+  </li>
+</ol>
+
+<h2 id="step5">5. Test Your SSH Connection</h2>
+<ol>
+  <li>
+    In Git Bash, run:<br>
+    <code>ssh -T git@github.com</code>
+  </li>
+  <li>
+    The first time, type <b>yes</b> to accept GitHub's fingerprint.<br>
+    If successful, you’ll see:<br>
+    <i>Hi username! You’ve successfully authenticated, but GitHub does not provide shell access.</i>
+  </li>
+</ol>
+<div class="tip">
+  <b>Tip:</b> You can now use <code>git clone</code>, <code>git pull</code>, and <code>git push</code> without entering your password.
+</div>
+
+<h2 id="faq">FAQ & Troubleshooting</h2>
+<ul>
+  <li>
+    <b>Q: I get “Permission denied (publickey)”?</b><br>
+    <i>Make sure your key is added to GitHub and that you’re running Git Bash as your user, not Administrator. Also, confirm <code>ssh-agent</code> is running and your key is added with <code>ssh-add -l</code>.</i>
+  </li>
+  <li>
+    <b>Q: How do I add a different key?</b><br>
+    <i>Run <code>ssh-add ~/.ssh/your_other_key</code>. You can have multiple keys per account.</i>
+  </li>
+  <li>
+    <b>Q: Where are my keys?</b><br>
+    <i>Usually in <code>C:\Users\YourName\.ssh</code></i>
+  </li>
+  <li>
+    <b>Q: Can I use this for GitHub Enterprise?</b><br>
+    <i>Yes—add the key in your GitHub Enterprise account the same way.</i>
+  </li>
+</ul>
+
+</main>
+<footer>
+  © 2025 GitHub SSH Guide &bull; Maintained by <a href="https://aaneloy.github.io/" target="_blank" style="color:#222;text-decoration:underline;">Asif Ahmed Neloy</a>
+</footer>
+</body>
+</html>
