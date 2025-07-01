@@ -5,9 +5,8 @@ This repo contains a modern, self-contained `index.html` that walks you through 
 
 ---
 
----
 
-## 🚀 Quick Start
+##  Quick Start
 
 1. **Clone or Download** this repository  
    `git clone https://github.com/aaneloy/Windows11_SSHKey_GitHub.git`
@@ -17,7 +16,7 @@ This repo contains a modern, self-contained `index.html` that walks you through 
 ---
 
 
-## 📄 License
+##  License
 
 This tutorial is released under the MIT License.  
 Feel free to use, remix, or share!
